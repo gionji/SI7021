@@ -1,4 +1,5 @@
-SI7021
+UDOO Humidity Brick ( chip SI7001 )
 ======
 
-Arduino library for SI7020 and SI7021 environmental sensors
+Arduino library for SI7020, SI7021, SI7001 environmental sensors.
+
