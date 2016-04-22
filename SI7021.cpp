@@ -25,9 +25,9 @@ SI7021::SI7021() {
 }
 
 bool SI7021::begin() {
-    Wire.begin();
-    Wire.beginTransmission(I2C_ADDR);
-    if (Wire.endTransmission() == 0) {
+    Wire1.begin();
+    Wire1.beginTransmission(I2C_ADDR);
+    if (Wire1.endTransmission() == 0) {
         _si_exists = true;
     }
     return _si_exists;
@@ -77,20 +77,20 @@ void SI7021::_command(byte * cmd, byte * buf ) {
 }
 
 void SI7021::_writeReg(byte * reg, int reglen) {
-    Wire.beginTransmission(I2C_ADDR);
+    Wire1.beginTransmission(I2C_ADDR);
     for(int i = 0; i < reglen; i++) {
         reg += i;
-        Wire.write(*reg); 
+        Wire1.write(*reg); 
     }
-    Wire.endTransmission();
+    Wire1.endTransmission();
 }
 
 int SI7021::_readReg(byte * reg, int reglen) {
-    Wire.requestFrom(I2C_ADDR, reglen);
-    while(Wire.available() < reglen) {
+    Wire1.requestFrom(I2C_ADDR, reglen);
+    while(Wire1.available() < reglen) {
     }
     for(int i = 0; i < reglen; i++) { 
-        reg[i] = Wire.read(); 
+        reg[i] = Wire1.read(); 
     }
     return 1;
 }
@@ -130,6 +130,7 @@ struct si7021_env SI7021::getHumidityAndTemperature() {
     si7021_env ret = {0, 0, 0};
     ret.humidityBasisPoints      = getHumidityBasisPoints();
     ret.celsiusHundredths        = _getCelsiusPostHumidity();
+    ret.humidityPercent 		 = getHumidityPercent();
     ret.fahrenheitHundredths     = (1.8 * ret.celsiusHundredths) + 3200;
     return ret;
 }
